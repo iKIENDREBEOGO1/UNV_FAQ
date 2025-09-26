@@ -1,0 +1,64 @@
+{
+  "version": "1.0",
+  "intents": [
+    
+    {
+      "intent": "frais_inscription",
+      "description": "Informer sur les frais et le paiement, avec personnalisation par niveau/semestre si fourni.",
+      "required_entities": [
+        "NIVEAU",
+        "SEMESTRE"
+      ],
+      "optional_entities": [
+        "MONTANT",
+        "MODE_PAIEMENT"
+      ],
+      "fallback_prompt": "Pour vous répondre précisément, indiquez votre niveau (Licence/Master) et le semestre (S1/S2).",
+      "template_text": "Pour {NIVEAU} (semestre {SEMESTRE}), les frais d’inscription sont de {MONTANT} FCFA. Paiement via {MODE_PAIEMENT}. Procédure détaillée : {LIEN}.",
+      "notes": "Si MONTANT ou MODE_PAIEMENT manquent, renvoyer la procédure officielle et/ou demander précision.",
+      "default_links": [
+        "https://uv.bf/procedure-de-paiement-des-frais-dinscription-et-de-formation/"
+      ]
+    },
+   
+   
+  {
+  "intent": "acces_plateforme",
+  "required_entities": [],
+  "optional_entities": ["CONTACT", "SERVICE"],
+  "template_text": "Accédez à la plateforme via https://univ-virtuelle.bf/ avec vos identifiants UV-BF. En cas de mot de passe perdu, utilisez « Mot de passe oublié » sur la page de connexion.",
+  "contact_suffix": " Besoin d’aide ? Contactez {SERVICE} au {CONTACT}.",
+  "default_links": ["https://univ-virtuelle.bf/"],
+  "defaults": {
+    "SERVICE": "Support informatique",
+    "CONTACT": "+226 22 20 31 31"
+  }
+},
+    {
+      "intent": "info_generale_uvbf",
+      "description": "Informations générales (statut public/privé, domaines de formation).",
+      "required_entities": ["FILIER"],
+      "optional_entities": [],
+      "fallback_prompt": "",
+      "template_text": "L’UV-BF est un établissement public de l’État burkinabè. Elle offre des formations à distance dans les domaines des sciences du numérique, sciences fondamentales et sciences transversales. Détails : {LIEN}.",
+      "default_links": [
+        "https://uv.bf/foire-aux-questions/",
+        "https://uv.bf/offre-de-formation/"
+      ]
+    },
+    {
+      "intent": "examens_modalites",
+      "description": "Modalités d’évaluation et d’examen.",
+      "required_entities": [],
+      "optional_entities": [
+        "TYPE_EXAMEN",
+        "NIVEAU"
+      ],
+      "fallback_prompt": "",
+      "template_text": "Les évaluations se déroulent en ligne (40 %) et sur table en présentiel (60 %). Les délibérations sont semestrielles avec une session unique couvrant les deux semestres.",
+      "default_links": [
+        "https://uv.bf/foire-aux-questions/"
+      ]
+    }
+  ]
+}

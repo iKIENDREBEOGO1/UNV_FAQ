@@ -1,0 +1,113 @@
+{
+  "version": "1.0",
+  "entities": [
+    {
+      "name": "FILIERE",
+      "description": "Nom d’une filière ou spécialité (ex: Génie logiciel, Cybersécurité, Mathématiques-Informatique).",
+      "examples": [
+        "Génie logiciel",
+        "Cybersécurité",
+        "Géomatique",
+        "Mathématiques-Informatique"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "NIVEAU",
+      "description": "Niveau d’étude (Licence, Master) ou abrégé (L1, L2, M1, M2).",
+      "examples": [
+        "Licence",
+        "Master",
+        "L1",
+        "M2"
+      ],
+      "patterns": [
+        "\\\\b(L[1-3]|M[1-2]|Licence|Master)\\\\b"
+      ]
+    },
+    {
+      "name": "SEMESTRE",
+      "description": "Numéro du semestre.",
+      "examples": [
+        "S1",
+        "S2",
+        "semestre 1"
+      ],
+      "patterns": [
+        "\\\\b(S[12]|semestre\\\\s*[12])\\\\b"
+      ]
+    },
+    {
+      "name": "TYPE_EXAMEN",
+      "description": "Type de session ou modalité (normale, rattrapage, session unique).",
+      "examples": [
+        "normale",
+        "rattrapage",
+        "session unique"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "MONTANT",
+      "description": "Montant en FCFA éventuellement cité par l’utilisateur.",
+      "examples": [
+        "50 000 FCFA",
+        "16500 F"
+      ],
+      "patterns": [
+        "\\\\b\\\\d{2,3}(?:[\\\\s\\\\.,]\\\\d{3})*\\\\s*(?:FCFA|F)\\\\b"
+      ]
+    },
+    {
+      "name": "MODE_PAIEMENT",
+      "description": "Canal ou organisme de paiement (Trésor public, virement, OM).",
+      "examples": [
+        "Trésor public",
+        "virement bancaire",
+        "paiement en ligne"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "DOCUMENT",
+      "description": "Pièces administratives (attestation, relevé de notes, diplôme).",
+      "examples": [
+        "attestation",
+        "relevé de notes",
+        "diplôme"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "SERVICE",
+      "description": "Service UV-BF ou entité de contact (Scolarité, Support informatique).",
+      "examples": [
+        "Scolarité",
+        "Support informatique"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "CONTACT",
+      "description": "Coordonnées (téléphone, email).",
+      "examples": [
+        "02 20 31 31",
+        "info@uv.bf"
+      ],
+      "patterns": [
+        "[\\\\w\\\\.-]+@[\\\\w\\\\.-]+\\\\.[a-zA-Z]{2,}",
+        "\\\\b(?:\\\\+?226)?[\\\\s\\\\-]?(?:\\\\d{2}[\\\\s\\\\-]?){4}\\\\b"
+      ]
+    },
+    {
+      "name": "PLATEFORME",
+      "description": "Nom de la plateforme de formation (LMS, Moodle, portail).",
+      "examples": [
+        "Moodle",
+        "plateforme UV-BF",
+        "LMS"
+      ],
+      "patterns": []
+    }
+  ]
+}

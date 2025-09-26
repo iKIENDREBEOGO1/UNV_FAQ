@@ -1,0 +1,10 @@
+id,question,reponse,categorie,mots_cles
+1,L’UV-BF est-elle une université publique ou privée ?,"L’UV-BF est un établissement public de l’État burkinabè, à caractère scientifique, culturel et technique.",informations_generales,institution;statut
+2,Quelles formations propose l’UV-BF ?,"Trois programmes principaux : sciences du numérique, sciences fondamentales et sciences transversales, avec des parcours licence et master.",offre_formations,formations;programmes;licence;master
+3,Quelles sont les conditions d’accès à l’UV-BF ?,Les bacheliers orientés par le ministère peuvent s’inscrire. Des appels à candidature sont aussi ouverts selon les filières.,admission,conditions;admission;orientation;appel
+4,Comment se déroulent les cours à l’UV-BF ?,"Les enseignements se font surtout à distance via une plateforme LMS, avec activités synchrones et asynchrones. Des regroupements en présentiel peuvent être requis.",modalites_enseignement,LMS;distance;synchrone;asynchrone;regroupements
+5,Comment se déroulent les évaluations et examens ?,Évaluations en ligne (40 %) et examens sur table en présentiel (60 %). Délibérations semestrielles.,examens,evaluations;examens;presentiel;en_ligne
+6,Les diplômes de l’UV-BF sont-ils reconnus par le CAMES ?,"Oui, les diplômes délivrés par l’UV-BF sont reconnus par le CAMES.",reconnaissance,diplomes;CAMES;reconnaissance
+7,Comment accéder à la plateforme de formation ?,"Après l’inscription pédagogique, l’étudiant reçoit un identifiant et un mot de passe pour se connecter à la plateforme.",acces_plateforme,plateforme;identifiants;connexion
+8,Que faire si j’ai perdu mon mot de passe ?,Utiliser la fonction de réinitialisation disponible sur la page de connexion de la plateforme.,recuperation_compte,mot_de_passe;reinitialisation;connexion
+9,Que faire en cas de difficultés d’accès à la plateforme ?,Signaler le problème au délégué ou responsable de filière. Un bot d’assistance UV-BF peut aussi guider.,assistance_acces,support;acces;plateforme;assistance
