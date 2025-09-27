@@ -1,0 +1,5 @@
+panda
+scikit-learn
+regex
+pyyaml
+plotly

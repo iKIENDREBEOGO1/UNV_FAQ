@@ -1,0 +1,9 @@
+data:
+  faq_csv: "data/FAQ_UV-BF.csv"
+  ner_json: "data/ner_uvbf.json"
+  templates_json: "data/templates_FAQ_uvbf.json"
+retriever:
+  ngram_range: [1, 2]
+  min_df: 1
+  max_df: 0.95
+  top_k: 3
