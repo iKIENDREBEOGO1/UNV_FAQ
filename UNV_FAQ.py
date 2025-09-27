@@ -588,11 +588,7 @@ if page == "💬 Chatbot":
                         handle_feedback(interaction_id, "dislike")
                         st.rerun()
                 
-                # Affichage debug des métadonnées
-                with st.expander("🔍 Détails techniques", expanded=False):
-                    st.write(f"**Intention détectée:** {message.get('intent', 'N/A')}")
-                    st.write(f"**Entités extraites:** {message.get('entities', {})}")
-                    st.write(f"**Score de confiance:** {message.get('confidence', 0):.2f}")
+              
 
     st.markdown('</div>', unsafe_allow_html=True)
 
