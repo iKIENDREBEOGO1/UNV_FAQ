@@ -52,13 +52,61 @@ html, body, [data-testid="stAppViewContainer"] {
   color: var(--text-dark);
 }
 
-/* Navigation */
+/* Navigation stylée */
 .nav-container {
   background: var(--bg-white);
-  padding: 16px 24px;
-  margin-bottom: 24px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
   border-bottom: 1px solid var(--border-light);
   box-shadow: var(--shadow-soft);
+}
+
+.custom-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 12px 20px;
+  border: 2px solid var(--border-light);
+  border-radius: 25px;
+  background: var(--bg-white);
+  color: var(--text-medium);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.tab-button:hover {
+  border-color: var(--primary-green);
+  background: var(--light-green);
+  transform: translateY(-1px);
+}
+
+.tab-button.active {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+  border-color: var(--primary-green);
+  color: white;
+  box-shadow: 0 4px 12px rgba(31, 170, 75, 0.3);
+}
+
+.tab-icon {
+  font-size: 16px;
+}
+
+/* Masquer les radio buttons par défaut de Streamlit */
+.stRadio > div {
+  display: none !important;
 }
 
 /* Titre principal */
@@ -408,20 +456,44 @@ def handle_feedback(interaction_id, feedback_type):
         st.session_state.feedback[interaction_id] = feedback_type
         update_feedback(interaction_id, feedback_type)
 
-# --------- Interface utilisateur avec navigation ----------
+# --------- Interface utilisateur avec navigation améliorée ----------
 
-# Navigation
-with st.container():
-    st.markdown('<div class="nav-container">', unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        page = st.radio(
-            "Navigation",
-            ["💬 Chatbot", "📊 Tableau de bord"],
-            horizontal=True,
-            key="navigation"
-        )
-    st.markdown('</div>', unsafe_allow_html=True)
+# Navigation avec onglets personnalisés fonctionnels
+st.markdown('<div class="nav-container">', unsafe_allow_html=True)
+
+# Initialisation de l'état de navigation
+if "current_page" not in st.session_state:
+    st.session_state.current_page = "chatbot"
+
+# Création des boutons d'onglets
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    subcol1, subcol2 = st.columns(2)
+    
+    with subcol1:
+        if st.button(
+            "💬 Chatbot",
+            key="tab_chatbot",
+            use_container_width=True,
+            type="primary" if st.session_state.current_page == "chatbot" else "secondary"
+        ):
+            st.session_state.current_page = "chatbot"
+            st.rerun()
+    
+    with subcol2:
+        if st.button(
+            "📊 Analytics", 
+            key="tab_analytics",
+            use_container_width=True,
+            type="primary" if st.session_state.current_page == "analytics" else "secondary"
+        ):
+            st.session_state.current_page = "analytics"
+            st.rerun()
+
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Définir la page courante
+page = "💬 Chatbot" if st.session_state.current_page == "chatbot" else "📊 Tableau de bord"
 
 # Initialisation des states
 if "history" not in st.session_state: 
@@ -516,7 +588,11 @@ if page == "💬 Chatbot":
                         handle_feedback(interaction_id, "dislike")
                         st.rerun()
                 
-                
+                # Affichage debug des métadonnées
+                with st.expander("🔍 Détails techniques", expanded=False):
+                    st.write(f"**Intention détectée:** {message.get('intent', 'N/A')}")
+                    st.write(f"**Entités extraites:** {message.get('entities', {})}")
+                    st.write(f"**Score de confiance:** {message.get('confidence', 0):.2f}")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -598,8 +674,43 @@ elif page == "📊 Tableau de bord":
             )
             st.plotly_chart(fig_intents, use_container_width=True)
         
-                
+        # Section entités
+        st.subheader("🏷️ Entités les plus extraites")
+        all_entities = []
+        for entities_str in df['entities'].dropna():
+            try:
+                entities_dict = json.loads(entities_str)
+                for entity_type, values in entities_dict.items():
+                    all_entities.extend(values)
+            except:
+                continue
         
+        if all_entities:
+            entity_counts = Counter(all_entities).most_common(10)
+            entities_df = pd.DataFrame(entity_counts, columns=['Entité', 'Fréquence'])
+            
+            fig_entities = px.bar(
+                entities_df, 
+                x='Fréquence', 
+                y='Entité',
+                orientation='h',
+                title="Top 10 des entités mentionnées",
+                color_discrete_sequence=['#1FAA4B']
+            )
+            st.plotly_chart(fig_entities, use_container_width=True)
+        
+        # Tableau des dernières interactions
+        st.subheader("💬 Dernières interactions")
+        recent_df = df.head(10)[['timestamp', 'query', 'intent', 'confidence_score', 'feedback']]
+        recent_df['timestamp'] = pd.to_datetime(recent_df['timestamp']).dt.strftime('%d/%m/%Y %H:%M')
+        recent_df = recent_df.rename(columns={
+            'timestamp': 'Date/Heure',
+            'query': 'Question',
+            'intent': 'Intention',
+            'confidence_score': 'Confiance',
+            'feedback': 'Feedback'
+        })
+        st.dataframe(recent_df, use_container_width=True)
         
         # Section export
         st.markdown("---")
