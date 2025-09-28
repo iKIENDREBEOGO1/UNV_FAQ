@@ -19,9 +19,6 @@ from src.templates import TemplateManager
 st.set_page_config(page_title="UV-BF FAQ Chatbot", page_icon="🎓", layout="wide")
 
 BASE_DIR = Path(__file__).parent
-IMG_DIR = BASE_DIR / "image"
-LOGO_MINISTERE = IMG_DIR / "ministere.png"
-LOGO_UNV = IMG_DIR / "logo_unv.png"
 DB_PATH = BASE_DIR / "chatbot_analytics.db"
 
 # --------- CSS amélioré avec design professionnel ----------
