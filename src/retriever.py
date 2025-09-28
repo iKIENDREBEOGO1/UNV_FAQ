@@ -43,7 +43,8 @@ class Retriever:
             ngram_range=ngram_range,
             min_df=min_df,
             max_df=max_df,
-            preprocessor=_normalize,        # <<<<<< clé pour sing/pluriel + accents
+            preprocessor=_normalize,
+            stop_words="french",
             token_pattern=r"(?u)\b\w+\b"
         )
         self.doc_term = self.vectorizer.fit_transform(docs)
