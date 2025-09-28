@@ -1,10 +1,10 @@
 import regex as re
 
 INTENT_RULES = [
-    ("frais_inscription", [r"\bfrais\b|inscription|payer|paiement|versement"]),
-    ("acces_plateforme", [r"plateforme|lms|moodle|mot de passe|connexion|connecter|login|se connecter"]),
-    ("examens_modalites", [r"examen|évaluation|eval|en ligne|présentiel|sur table|modalit"]),
-    ("info_generale_uvbf", [r"uv\-?bf|université virtuelle|formation|offre|filière|publique|privée"]),
+    ("frais_inscription", [r"\bfrais\b", r"inscription", r"payer", r"paiement", r"versement"]),
+    ("acces_plateforme", [r"plateforme", r"lms", r"moodle", r"mot de passe", r"connexion", r"connecter", r"login", r"se connecter"]),
+    ("examens_modalites", [r"examen", r"évaluation", r"eval", r"en ligne", r"présentiel", r"sur table", r"modalit"]),
+    ("info_generale_uvbf", [r"uv\-?bf", r"université virtuelle", r"formation", r"offre", r"filière", r"publique", r"privée"]),
 ]
 
 def classify_intent(text: str) -> str:
@@ -13,10 +13,4 @@ def classify_intent(text: str) -> str:
         for pat in patterns:
             if re.search(pat, t):
                 return intent
-    if re.search(r"examen|évaluation|sur table", t):
-        return "examens_modalites"
-    if re.search(r"frais|inscription|paiement|versement", t):
-        return "frais_inscription"
-    if re.search(r"mot de passe|plateforme|connexion|login", t):
-        return "acces_plateforme"
     return "info_generale_uvbf"
