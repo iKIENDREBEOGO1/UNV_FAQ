@@ -13,7 +13,6 @@ from collections import Counter
 from src.loader import load_faq, load_json
 from src.ner import RegexNER
 from src.retriever import Retriever
-from src.intent import classify_intent
 from src.templates import TemplateManager
 
 st.set_page_config(page_title="UV-BF FAQ Chatbot", page_icon="🎓", layout="wide")
