@@ -409,39 +409,43 @@ retr = Retriever(faq["index_text"], ngram_range=nr, min_df=retr_cfg.get("min_df"
 tm = TemplateManager(templates)
 
 def answer(query: str) -> tuple:
-    """Retourne la réponse et les métadonnées pour analytics"""
+    """Retourne la réponse et les métadonnées pour analytics (retrieval-first)"""
     start_time = datetime.now()
-    
+
+    # 1) Extraction d'entités (NER)
     ents = ner.extract(query)
-    intent = classify_intent(query)
-    rendered = tm.render(intent, ents)
-    
-    confidence_score = 0.0
-    response = ""
-    
-    if not rendered["need_more_info"] and rendered["text"]:
-        response = rendered["text"]
-        confidence_score = 1.0  # Template match = haute confiance
+
+    # 2) Recherche FAQ (retriever)
+    hits = retr.search(query, top_k=top_k)
+
+    if not hits:
+        response = "Désolé, je n'ai pas trouvé d'information pertinente."
+        intent_final = "info_generale_uvbf"   # catégorie par défaut si rien trouvé
+        confidence_score = 0.0
     else:
-        hits = retr.search(query, top_k=top_k)
-        if not hits:
-            response = "Désolé, je n'ai pas trouvé d'information pertinente."
-            confidence_score = 0.0
+        # meilleur candidat
+        idx, score = hits[0]
+        row = faq.iloc[idx]
+
+        # Catégorie vraie issue du CSV (sera utilisée comme 'intent' pour l'analytics et les templates)
+        intent_final = str(row.get("categorie", "")).strip() or "info_generale_uvbf"
+        confidence_score = float(score)
+
+        # 3) Option templates : on tente un rendu avec la catégorie trouvée
+        #    Si pas de template ou info manquante -> on renvoie la réponse CSV
+        rendered = tm.render(intent_final, ents)
+        if rendered and (not rendered.get("need_more_info")) and rendered.get("text"):
+            response = rendered["text"]
         else:
-            idx, score = hits[0]
-            confidence_score = score
-            row = faq.iloc[idx]
-            response = f"**{row['question_canonique']}**\n\n{row['reponse']}"
-            if isinstance(row.get("liens"), str) and row["liens"]:
-                first = str(row["liens"]).split(";")[0]
-                response += f"\n\n[Voir plus]({first})"
-    
+            # Réponse brute de la FAQ (CSV simplifié)
+            response = f"**{row['question']}**\n\n{row['reponse']}"
+
+    # 4) Logging
     response_time = (datetime.now() - start_time).total_seconds()
-    
-    # Log dans la base de données
-    log_interaction(query, response, ents, intent, confidence_score, response_time)
-    
-    return response, ents, intent, confidence_score
+    log_interaction(query, response, ents, intent_final, confidence_score, response_time)
+
+    return response, ents, intent_final, confidence_score
+
 
 def handle_feedback(interaction_id, feedback_type):
     """Gère le feedback et met à jour la base de données"""
