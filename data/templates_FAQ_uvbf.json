@@ -37,7 +37,7 @@
     {
       "intent": "info_generale_uvbf",
       "description": "Informations générales (statut public/privé, domaines de formation).",
-      "required_entities": ["FILIER"],
+      "required_entities": [],
       "optional_entities": [],
       "fallback_prompt": "",
       "template_text": "L’UV-BF est un établissement public de l’État burkinabè. Elle offre des formations à distance dans les domaines des sciences du numérique, sciences fondamentales et sciences transversales. Détails : {LIEN}.",
