@@ -401,7 +401,17 @@ if isinstance(nr, list): nr = (int(nr[0]), int(nr[1]))
 top_k = int(retr_cfg.get("top_k", 3))
 
 ner = RegexNER(ner_schema)
-retr = Retriever(faq["index_text"], ngram_range=nr, min_df=retr_cfg.get("min_df", 1), max_df=retr_cfg.get("max_df", 0.95))
+
+retr = Retriever(
+    faq["index_text"],
+    faq,                       # ✅ on passe le DataFrame pour utiliser 'mots_cles'
+    ngram_range=nr,
+    min_df=retr_cfg.get("min_df", 1),
+    max_df=retr_cfg.get("max_df", 0.95),
+    keyword_weight=0.30,       # ajuste 0.2–0.4 selon tes tests
+    threshold=0.0              # optionnel
+)
+
 tm = TemplateManager(templates)
 
 def answer(query: str) -> tuple:
